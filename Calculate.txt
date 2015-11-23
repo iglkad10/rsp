@@ -1,0 +1,13 @@
+R	P	S
+3	2	1	
+
+r - p = 1
+r - s = 2
+p - r = -1
+p - s = 1
+s - r = -2
+s - p = -1
+					-1 = win
+					2 = win
+					-2 = lose
+					1 = lose

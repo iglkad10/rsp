@@ -6,6 +6,7 @@
 package game;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -48,6 +49,9 @@ public class RockPaperScissors extends JPanel implements ActionListener {
     // Siege merken
     Integer winsPlayer = 0;
     Integer winsPc = 0;
+    String result = "";
+    String plMove = "";
+    String pcMove = "";
     
     public RockPaperScissors() {
         init();
@@ -93,7 +97,9 @@ public class RockPaperScissors extends JPanel implements ActionListener {
         
         // Methode zur Gewinnermittlung whoWon aufrufen
         if(e.getSource() == reset) {
-            whoWon();
+            reset();
+            repaint();
+            return;
         }else if(e.getSource() == paper){
             setImage("paper", true);
             System.out.println("sup");
@@ -103,6 +109,7 @@ public class RockPaperScissors extends JPanel implements ActionListener {
             setImage("scissors", true);
         }
         randPc();
+        whoWon();
         repaint();
         // Panel neu zeichnen, damit Ansicht aktuell dargestellt wird, da sich Bilder geändert haben
         // TODO
@@ -115,7 +122,32 @@ public class RockPaperScissors extends JPanel implements ActionListener {
         
         // Pc hat gewonnen
         // TODO
-        
+        System.out.println("What thap"+plMove+pcMove);
+        if(plMove.equals(pcMove)){
+            draw();
+        }else{
+            int pl = getNr(plMove);
+            int pc = getNr(pcMove);
+            int x = pl-pc;
+            if((x == -1)||(x == 2)){
+                win();
+            }else if(x == -2){
+                lose();
+            }else if(x== 1){
+                    lose();
+                }
+        }
+    }
+    private int getNr(String s){
+        int i = 0;
+        if(s.equals("paper")){
+            i = 2;
+        }else if(s.equals("rock")){
+            i=3;
+        }else if(s.equals("scissors")){
+            i=1;
+        }
+        return i;
     }
     
     public Image randPc() {
@@ -130,7 +162,7 @@ public class RockPaperScissors extends JPanel implements ActionListener {
         // Zufallsbild laden
         System.out.println(index);
         img = Toolkit.getDefaultToolkit().getImage(arrayRandPc[index]);
-        setImage(getImage(arrayRandPc[index]))
+        setImage(arrayRandPc[index],false);
         return img;
     }
     
@@ -143,9 +175,9 @@ public class RockPaperScissors extends JPanel implements ActionListener {
         
         // Beschriftung
         g2d.setColor(Color.blue);
-        g2d.drawString("Player", 10, 90);
+        g2d.drawString("Player", 100, 90);
         g2d.setColor(Color.red);
-        g2d.drawString("PC", 250, 90);
+        g2d.drawString("PC", 360, 90);
         // Trennlinie
         g2d.setColor(Color.black);
         g2d.drawLine(10, 100, 490, 100);
@@ -153,14 +185,50 @@ public class RockPaperScissors extends JPanel implements ActionListener {
         g2d.drawImage(imgPlayer, 10, 120, this);
         g2d.drawImage(imgPc, 250, 120, this);
         // Siege anzeigen
-        g2d.drawString(winsPlayer.toString(), 10, 300);
-        g2d.drawString(winsPc.toString(), 250, 300);
+        g2d.drawString(winsPlayer.toString(), 100, 300);
+        g2d.drawString(winsPc.toString(), 360, 300);
+        
+        g2d.setFont(new Font("TimesRoman", Font.PLAIN, 20));
+        g2d.drawString(result, 220, 90);
     }
 
     private void setImage(String move, boolean b) {
         //To change body of generated methods, choose Tools | Templates.
-        if(b){move+="Right";}
-        imgPlayer = Toolkit.getDefaultToolkit().getImage("img/"+move+".jpg");
+        if(b){
+            plMove = move;
+            move+="Right";
+            imgPlayer = Toolkit.getDefaultToolkit().getImage("img/"+move+".jpg");
+        }
+        else{
+            pcMove = move;
+            imgPc = Toolkit.getDefaultToolkit().getImage("img/"+move+".jpg");
+        }
         System.out.println("img/"+move+".jpg");
+    }
+
+    private void reset() {
+        winsPlayer = 0;
+        winsPc = 0;
+        result = "";
+        imgPlayer = Toolkit.getDefaultToolkit().getImage("img/play.png");
+        imgPc = Toolkit.getDefaultToolkit().getImage("img/play.png");
+        repaint();
+        
+    }
+
+    private void win() {
+        result = "Win";
+        winsPlayer++;
+        repaint();
+    }
+
+    private void lose() {
+        result = "Lose";
+        winsPc++;
+        repaint();
+    }
+    private void draw() {
+        result = "Draw";
+        repaint();
     }
 }

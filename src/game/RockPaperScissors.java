@@ -33,9 +33,9 @@ public class RockPaperScissors extends JPanel implements ActionListener {
     
     // Random - für PC-Auswahl
     Random rand = null;
-    String arrayRandPc[] = {"img/rock.jpg",
-                            "img/paper.jpg",
-                            "img/scissors.jpg"};
+    String arrayRandPc[] = {"rock",
+                            "paper",
+                            "scissors"};
     
     // Merken welches Bild angezeigt wird
     boolean isRockPlayer = false;
@@ -92,10 +92,18 @@ public class RockPaperScissors extends JPanel implements ActionListener {
         // TODO
         
         // Methode zur Gewinnermittlung whoWon aufrufen
-        if(e.getSource() != reset) {
+        if(e.getSource() == reset) {
             whoWon();
+        }else if(e.getSource() == paper){
+            setImage("paper", true);
+            System.out.println("sup");
+        }else if(e.getSource() == rock){
+            setImage("rock", true);
+        }else if(e.getSource() == scissors){
+            setImage("scissors", true);
         }
-        
+        randPc();
+        repaint();
         // Panel neu zeichnen, damit Ansicht aktuell dargestellt wird, da sich Bilder geändert haben
         // TODO
     }
@@ -120,7 +128,9 @@ public class RockPaperScissors extends JPanel implements ActionListener {
         // TODO
         
         // Zufallsbild laden
+        System.out.println(index);
         img = Toolkit.getDefaultToolkit().getImage(arrayRandPc[index]);
+        setImage(getImage(arrayRandPc[index]))
         return img;
     }
     
@@ -145,5 +155,12 @@ public class RockPaperScissors extends JPanel implements ActionListener {
         // Siege anzeigen
         g2d.drawString(winsPlayer.toString(), 10, 300);
         g2d.drawString(winsPc.toString(), 250, 300);
+    }
+
+    private void setImage(String move, boolean b) {
+        //To change body of generated methods, choose Tools | Templates.
+        if(b){move+="Right";}
+        imgPlayer = Toolkit.getDefaultToolkit().getImage("img/"+move+".jpg");
+        System.out.println("img/"+move+".jpg");
     }
 }

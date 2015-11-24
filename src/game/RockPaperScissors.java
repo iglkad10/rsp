@@ -137,6 +137,13 @@ public class RockPaperScissors extends JPanel implements ActionListener {
                     lose();
                 }
         }
+        if(winsPc >= 10){
+            JOptionPane.showMessageDialog(this, "You lost... Try again", "Loser!", 0);
+            reset();
+        }else if(winsPlayer >= 10){
+            JOptionPane.showMessageDialog(this, "You won!", "Winner!", 1);
+            reset();
+        }
     }
     private int getNr(String s){
         int i = 0;
